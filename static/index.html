@@ -1,0 +1,34 @@
+<html>
+
+</body>
+	</html>
+	<body>
+		<h1>Gottalight - Lightning Network Node Testing</h1>
+		<p><a href='/listpeers'>listpeers</a></p>
+		<p><a href='/listfunds'>listfunds</a></p>
+		<p><a href='/getinfo'>getinfo</a></p>
+		<p><a href="javascript:randomlinkQR()">generate random QR invoice</a></p>
+		<p><a href="javascript:randomlink()">generate random invoice</a></p>
+<script>
+function randomlink(){
+	var text = "";
+	var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+	for (var i = 0; i < 5; i++)
+		text += possible.charAt(Math.floor(Math.random() * possible.length));
+	
+	window.location = "invoice?amount=1000&label="+text+"&desc=test";
+}
+function randomlinkQR(){
+	var text = "";
+	var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+	for (var i = 0; i < 5; i++)
+		text += possible.charAt(Math.floor(Math.random() * possible.length));
+	
+	window.location = "invoiceqr?amount=1000&label="+text+"&desc=test";
+}
+</script>
+	</body>
+
+</html>
