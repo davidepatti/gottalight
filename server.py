@@ -15,15 +15,19 @@ def index():
 
 @app .route( "/listpeers" )
 def listpeers():
-    return subprocess.check_output(['./api_scripts/listpeers.sh', ''])
+    return Response(subprocess.check_output(['lightning-cli', 'listpeers']),mimetype='application/json')
 
 @app .route( "/listfunds" )
 def listfunds():
-    return subprocess.check_output(['./api_scripts/listfunds.sh', ''])
+    return Response(subprocess.check_output(['lightning-cli', 'listfunds']),mimetype='application/json')
 
 @app .route( "/getinfo" )
 def getinfo():
-    return subprocess.check_output(['./api_scripts/getinfo.sh', ''])
+    return Response(subprocess.check_output(['lightning-cli', 'getinfo']),mimetype='application(json')
+
+@app .route( "/listinvoices" )
+def listinvoices():
+    return Response(subprocess.check_output(['lightning-cli', 'listinvoices']),mimetype='application(json')
 
 @app .route( "/invoice" )
 def invoice():
@@ -31,8 +35,7 @@ def invoice():
     p2=request.args.get("label")
     p3=request.args.get("desc")
    
-    #return subprocess.check_output(['./invoice.sh', p1, p2, p3])
-    return Response(subprocess.check_output(['./api_scripts/invoice.sh', p1, p2, p3]),mimetype='application/json')
+    return Response(subprocess.check_output(['lightning-cli','invoice', p1, p2, p3]),mimetype='application/json')
 
 
 @app .route( "/invoiceqr" )
@@ -40,7 +43,7 @@ def invoiceqr():
     p1=request.args.get("amount")
     p2=request.args.get("label")
     p3=request.args.get("desc")
-    invoice= subprocess.check_output(['./api_scripts/invoice.sh', p1, p2, p3])
+    invoice= subprocess.check_output(['lightning-cli','invoice', p1, p2, p3])
     bolt11 = json.loads(invoice.decode('utf-8'))['bolt11']
     
     return send_file(qrcode(bolt11,mode='raw',border=10),mimetype='image/png')
