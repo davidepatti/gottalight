@@ -5,7 +5,15 @@ Testing Environment for Bitcoin Lightning Network
 ## Requirements
 * A Bitcoin full node (see [this guide](https://medium.com/@meeDamian/bitcoin-full-node-on-rbp3-revised-88bb7c8ef1d1) for Raspberry Pi)
 * A Lightning Network full node (install c-lightning following [this guide](https://medium.com/@meeDamian/c-lightning-node-on-rbp3-b950660fb835))
-* python3 
+* Install the following packages, for example:
+
+`apt-get install python3 python3-pip libopenjp2-7 libtiff5`
+
+* Then use pip3 to install flask and qrcode:
+
+`sudo pip3 install flask`
+
+`sudo pip3 install flask_qrcode`
 
 ## Installation
 
