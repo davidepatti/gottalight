@@ -24,7 +24,9 @@ Testing Environment for Bitcoin Lightning Network
 * Execute the gottalight server:
 `python3 server.py` 
 
-Now c-lightning API and functionalities will be available via URLs. For example, connecting with browswer to the port 5000 of your node.
+Now c-lightning API and functionalities will be available via URLs by connecting with browswer to the port 5000 of your node.
+
+**TIP:** some JSON visualization helper could be useful when formatting the server response. For example something like [JSONView extension](https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc) (for Chrome) or similar.
 
 ## Security
 
