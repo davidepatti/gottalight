@@ -13,6 +13,10 @@ qrcode = QRcode(app)
 def index():
     return app.send_static_file('index.html')
 
+@app .route( "/getinfo" )
+def getinfo():
+    return Response(subprocess.check_output(['lightning-cli', 'getinfo']),mimetype='application(json')
+
 @app .route( "/listpeers" )
 def listpeers():
     return Response(subprocess.check_output(['lightning-cli', 'listpeers']),mimetype='application/json')
@@ -21,9 +25,9 @@ def listpeers():
 def listfunds():
     return Response(subprocess.check_output(['lightning-cli', 'listfunds']),mimetype='application/json')
 
-@app .route( "/getinfo" )
-def getinfo():
-    return Response(subprocess.check_output(['lightning-cli', 'getinfo']),mimetype='application(json')
+@app .route( "/search_node" )
+def search_node():
+    return "https://1ml.com/testnet/node/"
 
 @app .route( "/listinvoices" )
 def listinvoices():
@@ -48,6 +52,23 @@ def invoiceqr():
     
     return send_file(qrcode(bolt11,mode='raw',border=10),mimetype='image/png')
 
+@app .route("/waitanyinvoice")
+def waitanyinvoice():
+    return Response(subprocess.check_output(['lightning-cli','waitanyinvoice']),mimetype='application/json')
+
+
+@app .route("/pay")
+def pay():
+    bolt11=request.args.get("bolt11")
+    return Response(subprocess.check_output(['lightning-cli','pay', bolt11]),mimetype='application/json')
+    
+
+@app .route("/getroute")
+def getroute():
+    node_id=request.args.get("node_id")
+    msatoshi=request.args.get("msatoshi")
+    riskfactor=request.args.get("riskfactor")
+    return Response(subprocess.check_output(['lightning-cli','getroute', node_id,msatoshi,riskfactor]),mimetype='application/json')
 
 if __name__ == "__main__" :
     app.run( host = '0.0.0.0' ,  debug = True )
