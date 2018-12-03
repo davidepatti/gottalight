@@ -1,6 +1,6 @@
 # GottaLight
 
-Testing Environment for the c-lightning implementation of Bitcoin Lightning Network 
+Web Interface Testing Environment for the c-lightning implementation of Bitcoin Lightning Network 
 
 **WARNING**: still in very experimental early development stage, use on testnet ONLY
 
