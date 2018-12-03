@@ -3,52 +3,60 @@
 	<head>
 		<title> GottaLight </title>
 
-	<!-- jQuery library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 	</head>
-<body>
-	<h1>GottaLight</h1> 
-	<div>
-	<hr>
-	<h3> Node Status </h3>
-        <button onclick="getinfo()" type="button" class="btn btn-default">Get Node Info</button>
-        <button onclick="listpeers()" type="button" class="btn btn-default">List Peers</button>
-        <button onclick="listfunds()" type="button" class="btn btn-default">List Funds</button>
-        <button onclick="listinvoices()" type="button" class="btn btn-default">List Invoices</button>
-	</div>
-	<div>
-	<hr>
-	<h3> Payments </h3>
-	    <button onclick="generateinvoice()" type="button" class="btn btn-default">Generate Invoice</button>
-	    <button onclick="generateinvoiceQR()" type="button" class="btn btn-default">Generate Invoice QR</button>
-		  Amount (msatoshi): <input type="text" id="amount">
-		  Label:<input type="text" id="label">
-		  Description:<input type="text" id="desc">
-	</div>
+	<body>
+		<h1>GottaLight</h1> 
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Node Status</h3>
+			</div>
+			<div class="panel-body">
+				<button onclick="getinfo()" type="button" class="btn btn-default">Get Node Info</button>
+				<button onclick="getinfo()" type="button" class="btn btn-default">Get Node Info</button>
+				<button onclick="listpeers()" type="button" class="btn btn-default">List Peers</button>
+				<button onclick="listfunds()" type="button" class="btn btn-default">List Funds</button>
+				<button onclick="listinvoices()" type="button" class="btn btn-default">List Invoices</button>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Payments</h3>
+			</div>
+			<div class="panel-body">
+				<button onclick="generateinvoice()" type="button" class="btn btn-default">Generate Invoice</button>
+				<button onclick="generateinvoiceQR()" type="button" class="btn btn-default">Generate Invoice QR</button>
+				Amount (msatoshi): <input type="text" id="amount">
+				Label:<input type="text" id="label">
+				Description:<input type="text" id="desc">
+				<br>
+				<button onclick="pay()" type="button" class="btn btn-default">Pay Invoice</button> bolt11:<input type="text" id="bolt11"/> 
+			</div>
+		</div>
 
-	<button onclick="pay()" type="button" class="btn btn-default">Pay Invoice</button> bolt11:<input type="text" id="bolt11"/> 
-	<br>
-	<div>
-	<hr>
-	<h3> Network </h3>
-	<button onclick="connect()" type="button" class="btn btn-default">Connect to Node</button> peer id:<input type="text" id="connect_node_id"/> 
-	<br>
-<button onclick="fundchannel()" type="button" class="btn btn-default">Fund Channel</button> peer id:<input type="text" id="fund_node_id"/> amount:<input type="text" id="fund_amount"/> 
-	<br>
-	<button onclick="getroute()" type="button" class="btn btn-default">Get Route to Node</button> id:<input type="text" id="node_id"/></a> msatoshi:<input type="text" id="msatoshi"/>Risk factor:<input type="text" id="riskfactor"/></p>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Network</h3>
+			</div>
+			<div class="panel-body">
+				<button onclick="connect()" type="button" class="btn btn-default">Connect to Node</button> peer id:<input type="text" id="connect_node_id"/> 
+				<br>
+				<button onclick="fundchannel()" type="button" class="btn btn-default">Fund Channel</button> peer id:<input type="text" id="fund_node_id"/> amount:<input type="text" id="fund_amount"/> 
+				<br>
+				<button onclick="getroute()" type="button" class="btn btn-default">Get Route to Node</button> id:<input type="text" id="node_id"/></a> msatoshi:<input type="text" id="msatoshi"/>Risk factor:<input type="text" id="riskfactor"/></p>
 
-	</div>
-	<input type="checkbox" id="new_win" value="New">Open in new window<br>
-
+			</div>
+		</div>
 
 	<script>
 document.getElementById("amount").value =1000;
@@ -112,24 +120,6 @@ function generateinvoiceQR(){
 
 }
 
-function randominvoice(){
-	var text = "";
-	var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-	for (var i = 0; i < 5; i++)
-		text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-	window.location = "invoice?amount=1000&label="+text+"&desc=test";
-}
-function randominvoiceQR(){
-	var text = "";
-	var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-	for (var i = 0; i < 5; i++)
-		text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-	window.location = "invoiceqr?amount=1000&label="+text+"&desc=test";
-}
 function connect(){
 	var id = document.getElementById("connect_node_id");
 	var id_val = id.value;
@@ -143,7 +133,7 @@ function fundchannel(){
 	window.location = "fundchannel?id="+id_val+"&amount="+fund_amount_val;
 }
 
-	</script>
-</body>
+		</script>
+	</body>
 
 </html>
