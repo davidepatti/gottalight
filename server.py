@@ -52,9 +52,10 @@ def invoiceqr():
     
     return send_file(qrcode(bolt11,mode='raw',border=10),mimetype='image/png')
 
-@app .route("/waitanyinvoice")
-def waitanyinvoice():
-    return Response(subprocess.check_output(['lightning-cli','waitanyinvoice']),mimetype='application/json')
+@app .route("/waitinvoice")
+def waitinvoice():
+    p1=request.args.get("bolt11")
+    return Response(subprocess.check_output(['lightning-cli','waitinvoice',p1]),mimetype='application/json')
 
 
 @app .route("/pay")
@@ -62,6 +63,16 @@ def pay():
     bolt11=request.args.get("bolt11")
     return Response(subprocess.check_output(['lightning-cli','pay', bolt11]),mimetype='application/json')
     
+@app .route("/connect")
+def connect():
+    p1=request.args.get("id")
+    return Response(subprocess.check_output(['lightning-cli','connect', p1]),mimetype='application/json')
+
+@app .route("/fundchannel")
+def fundchannel():
+    p1=request.args.get("id")
+    p2=request.args.get("amount")
+    return Response(subprocess.check_output(['lightning-cli','fundchannel', p1,p2]),mimetype='application/json')
 
 @app .route("/getroute")
 def getroute():
