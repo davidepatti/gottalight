@@ -24,7 +24,7 @@ Web Interface Testing Environment for the c-lightning implementation of Bitcoin 
 * Clone the source code:
 `git clone https://github.com/davidepatti/gottalight.git`
 * Execute the gottalight server:
-`python3 server.py` 
+`python3 gottalight.py` 
 
 Now c-lightning API and functionalities will be available via URLs by connecting with browswer to the port 5000 of your node.
 
