@@ -11,7 +11,7 @@ qrcode = QRcode(app)
 
 @app .route( "/" )
 def index():
-    return app.send_static_file('index.html')
+    return app.send_static_file('gottalight_gui.html')
 
 @app .route( "/getinfo" )
 def getinfo():
@@ -24,10 +24,6 @@ def listpeers():
 @app .route( "/listfunds" )
 def listfunds():
     return Response(subprocess.check_output(['lightning-cli', 'listfunds']),mimetype='application/json')
-
-@app .route( "/search_node" )
-def search_node():
-    return "https://1ml.com/testnet/node/"
 
 @app .route( "/listinvoices" )
 def listinvoices():
@@ -61,7 +57,15 @@ def waitinvoice():
 @app .route("/pay")
 def pay():
     bolt11=request.args.get("bolt11")
-    return Response(subprocess.check_output(['lightning-cli','pay', bolt11]),mimetype='application/json')
+    resp = "["
+    try:
+        resp+=(subprocess.check_output(['lightning-cli','pay', bolt11],stderr=subprocess.STDOUT)).decode('utf-8')
+        resp+=", \"SUCCESS\"]"
+
+    except subprocess.CalledProcessError as e:
+        resp+=e.output.decode('utf-8')+", \"ERROR\"]"
+
+    return Response(resp,mimetype='application/json')
     
 @app .route("/delexpiredinvoce")
 def delexpiredinvoce():
@@ -86,7 +90,15 @@ def devrescanoutputs():
 @app .route("/connect")
 def connect():
     p1=request.args.get("id")
-    return Response(subprocess.check_output(['lightning-cli','connect', p1]),mimetype='application/json')
+    resp = "["
+    try:
+        resp+=(subprocess.check_output(['lightning-cli','connect', p1],stderr=subprocess.STDOUT)).decode('utf-8')
+        resp+=", \"SUCCESS\"]"
+
+    except subprocess.CalledProcessError as e:
+        resp+=e.output.decode('utf-8')+", \"ERROR\"]"
+
+    return Response(resp,mimetype='application/json')
 
 @app .route("/close")
 def closeid():
@@ -95,6 +107,7 @@ def closeid():
     try: 
         resp+=(subprocess.check_output(['lightning-cli','close', p1],stderr=subprocess.STDOUT)).decode('utf-8')
         resp+=", \"SUCCESS\"]"
+
     except subprocess.CalledProcessError as e:
         resp+=e.output.decode('utf-8')+", \"ERROR\"]"
 
@@ -103,20 +116,40 @@ def closeid():
 @app .route("/disconnect")
 def disconnect():
     p1=request.args.get("id")
-    return Response(subprocess.check_output(['lightning-cli','disconnect', p1]),mimetype='application/json')
+    resp = "["
+    try: 
+        resp+=(subprocess.check_output(['lightning-cli','disconnect', p1],stderr=subprocess.STDOUT)).decode('utf-8')
+        resp+=", \"SUCCESS\"]"
+    except subprocess.CalledProcessError as e:
+        resp+=e.output.decode('utf-8')+", \"ERROR\"]"
+
+    return Response(resp,mimetype='application/json')
 
 @app .route("/fundchannel")
 def fundchannel():
     p1=request.args.get("id")
     p2=request.args.get("amount")
-    return Response(subprocess.check_output(['lightning-cli','fundchannel', p1,p2]),mimetype='application/json')
+    resp = "["
+    try: 
+        resp+=(subprocess.check_output(['lightning-cli','fundchannel', p1,p2],stderr=subprocess.STDOUT)).decode('utf-8')
+        resp+=", \"SUCCESS\"]"
+    except subprocess.CalledProcessError as e:
+        resp+=e.output.decode('utf-8')+", \"ERROR\"]"
+
+    return Response(resp,mimetype='application/json')
 
 @app .route("/getroute")
 def getroute():
     node_id=request.args.get("node_id")
     msatoshi=request.args.get("msatoshi")
     riskfactor=request.args.get("riskfactor")
-    return Response(subprocess.check_output(['lightning-cli','getroute', node_id,msatoshi,riskfactor]),mimetype='application/json')
+    resp = "["
+    try: 
+        resp+=(subprocess.check_output(['lightning-cli','getroute', node_id,msatoshi,riskfactor],stderr=subprocess.STDOUT)).decode('utf-8')
+        resp+=", \"SUCCESS\"]"
+    except subprocess.CalledProcessError as e:
+        resp+=e.output.decode('utf-8')+", \"ERROR\"]"
+    return Response(resp,mimetype='application/json')
 
 if __name__ == "__main__" :
     app.run( host = '0.0.0.0' ,  debug = True )
