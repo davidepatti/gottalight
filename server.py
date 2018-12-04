@@ -15,7 +15,7 @@ def index():
 
 @app .route( "/getinfo" )
 def getinfo():
-    return Response(subprocess.check_output(['lightning-cli', 'getinfo']),mimetype='application(json')
+    return Response(subprocess.check_output(['lightning-cli', 'getinfo']),mimetype='application/json')
 
 @app .route( "/listpeers" )
 def listpeers():
@@ -31,7 +31,7 @@ def search_node():
 
 @app .route( "/listinvoices" )
 def listinvoices():
-    return Response(subprocess.check_output(['lightning-cli', 'listinvoices']),mimetype='application(json')
+    return Response(subprocess.check_output(['lightning-cli', 'listinvoices']),mimetype='application/json')
 
 @app .route( "/invoice" )
 def invoice():
@@ -63,10 +63,47 @@ def pay():
     bolt11=request.args.get("bolt11")
     return Response(subprocess.check_output(['lightning-cli','pay', bolt11]),mimetype='application/json')
     
+@app .route("/delexpiredinvoce")
+def delexpiredinvoce():
+    return Response(subprocess.check_output(['lightning-cli','delexpiredinvoce']),mimetype='application/json')
+
+@app .route("/getlog")
+def getlog():
+    return Response(subprocess.check_output(['lightning-cli','getlog']),mimetype='application/json')
+
+@app .route("/listconfigs")
+def listconfigs():
+    return Response(subprocess.check_output(['lightning-cli','listconfigs']),mimetype='application/json')
+
+@app .route("/listforwards")
+def listforwards():
+    return Response(subprocess.check_output(['lightning-cli','listforwards']),mimetype='application/json')
+
+@app .route("/devrescanoutputs")
+def devrescanoutputs():
+    return Response(subprocess.check_output(['lightning-cli','dev-rescan-outputs']),mimetype='application/json')
+
 @app .route("/connect")
 def connect():
     p1=request.args.get("id")
     return Response(subprocess.check_output(['lightning-cli','connect', p1]),mimetype='application/json')
+
+@app .route("/close")
+def closeid():
+    p1=request.args.get("id")
+    resp = "["
+    try: 
+        resp+=(subprocess.check_output(['lightning-cli','close', p1],stderr=subprocess.STDOUT)).decode('utf-8')
+        resp+=", \"SUCCESS\"]"
+    except subprocess.CalledProcessError as e:
+        resp+=e.output.decode('utf-8')+", \"ERROR\"]"
+
+    return Response(resp,mimetype='application/json')
+
+@app .route("/disconnect")
+def disconnect():
+    p1=request.args.get("id")
+    return Response(subprocess.check_output(['lightning-cli','disconnect', p1]),mimetype='application/json')
 
 @app .route("/fundchannel")
 def fundchannel():
