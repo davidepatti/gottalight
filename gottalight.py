@@ -35,7 +35,15 @@ def invoice():
     p2=request.args.get("label")
     p3=request.args.get("desc")
    
-    return Response(subprocess.check_output(['lightning-cli','invoice', p1, p2, p3]),mimetype='application/json')
+    resp = "["
+    try:
+        resp+=(subprocess.check_output(['lightning-cli','invoice', p1, p2, p3],stderr=subprocess.STDOUT)).decode('utf-8')
+        resp+=", \"SUCCESS\"]"
+
+    except subprocess.CalledProcessError as e:
+        resp+=e.output.decode('utf-8')+", \"ERROR\"]"
+
+    return Response(resp,mimetype='application/json')
 
 
 @app .route( "/invoiceqr" )
@@ -43,9 +51,19 @@ def invoiceqr():
     p1=request.args.get("amount")
     p2=request.args.get("label")
     p3=request.args.get("desc")
-    invoice= subprocess.check_output(['lightning-cli','invoice', p1, p2, p3])
-    bolt11 = json.loads(invoice.decode('utf-8'))['bolt11']
-    
+
+    bolt11 = "ERROR"
+
+    resp = "["
+    try:
+        invoice=(subprocess.check_output(['lightning-cli','invoice', p1, p2, p3],stderr=subprocess.STDOUT)).decode('utf-8')
+        #bolt11 = json.loads(invoice.decode('utf-8'))['bolt11']
+        bolt11 = json.loads(invoice)['bolt11']
+        #invoice= subprocess.check_output(['lightning-cli','invoice', p1, p2, p3])
+    except subprocess.CalledProcessError as e:
+        resp+=e.output.decode('utf-8')+", \"ERROR\"]"
+        return Response(resp,mimetype='application/json')
+
     return send_file(qrcode(bolt11,mode='raw',border=10),mimetype='image/png')
 
 @app .route("/waitinvoice")

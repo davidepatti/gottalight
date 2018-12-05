@@ -2,6 +2,7 @@
 	<head>
 		<title> GottaLight </title>
 
+		  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" />
 		<!-- jQuery library -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<!-- Latest compiled and minified CSS -->
@@ -70,10 +71,16 @@
 				<button onclick="getlog()" type="button" class="btn btn-default">Get Log</button> 
 				<button onclick="listconfigs()" type="button" class="btn btn-default">List Configs</button> 
 				<button onclick="devrescanoutputs()" type="button" class="btn btn-default">Rescan Outputs</button> 
+				<button onclick="test()" id="test" type="button" class="btn btn-default">Test</button> 
 			</div>
 		</div>
+		<div id="dialog" title="QR Code">
+			    <img src="http://placehold.it/50x50" alt="Placeholder Image" />
+		</div>
 
-	<script src="gottalight_gui.js"></script>
+		<script src="http://code.jquery.com/jquery-3.3.1.js"></script>
+		<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script src="gottalight_gui.js"></script>
 	</body>
 
 </html>

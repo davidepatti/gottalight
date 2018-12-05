@@ -35,7 +35,6 @@ function delexpiredinvoice(){
 		  alert(data[1]+" "+data[0].message);
 		}
 	);
-	//window.location = "delexpiredinvoice";
 }
 
 
@@ -47,16 +46,38 @@ function generateinvoice(){
 	var label_val = label.value;
 	var desc_val = desc.value;
 
+	/*
+	$.get("invoice?amount="+amount_val+"&label="+label_val+"&desc="+desc_val,
+		function( data ) {
+			//var jsonPretty = JSON.stringify(JSON.parse(data[0]),null,2);  
+
+
+		  //alert(data[1]+" "+data[0].message);
+		}
+	);
+	*/
 	window.location = "invoice?amount="+amount_val+"&label="+label_val+"&desc="+desc_val;
 
 }
 function generateinvoiceQR(){
+
 	var amount = document.getElementById("amount");
 	var label = document.getElementById("label");
 	var desc = document.getElementById("desc");
 	var amount_val = amount.value;
 	var label_val = label.value;
 	var desc_val = desc.value;
+
+	/*
+	$.get("invoiceqr?amount="+amount_val+"&label="+label_val+"&desc="+desc_val,
+		function( data ) {
+		  alert(data[1]+" "+data[0].message);
+		}
+	);
+
+	if (data[1]=="SUCCESS")
+		openQRDialog();
+		*/
 
 	window.location = "invoiceqr?amount="+amount_val+"&label="+label_val+"&desc="+desc_val;
 
@@ -132,3 +153,32 @@ function listforwards(){
 function devrescanoutputs(){
 	window.location = "devrescanoutputs";
 }
+
+$( function() {
+	$( "#dialog" ).dialog({
+		autoOpen: false,
+		show: {
+			effect: "blind",
+			duration: 1000
+		},
+		hide: {
+			effect: "explode",
+			duration: 1000
+		}
+	});
+
+	$( "#test" ).on( "click", function() {
+		$( "#dialog" ).dialog( "open" );
+	});
+} );
+
+function openQRDialog(){
+
+	$( "#dialog" ).dialog( "open" );
+}
+/*
+$(function test() {
+	$( "#dialog" ).dialog();
+});
+*/
+
