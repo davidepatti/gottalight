@@ -59,12 +59,15 @@ def invoiceqr():
         invoice=(subprocess.check_output(['lightning-cli','invoice', p1, p2, p3],stderr=subprocess.STDOUT)).decode('utf-8')
         #bolt11 = json.loads(invoice.decode('utf-8'))['bolt11']
         bolt11 = json.loads(invoice)['bolt11']
+       # resp+="\""+bolt11+"\""
+        resp+="\""+qrcode(bolt11,border=10)+"\""
+        resp+=", \"SUCCESS\"]"
         #invoice= subprocess.check_output(['lightning-cli','invoice', p1, p2, p3])
     except subprocess.CalledProcessError as e:
         resp+=e.output.decode('utf-8')+", \"ERROR\"]"
-        return Response(resp,mimetype='application/json')
 
-    return send_file(qrcode(bolt11,mode='raw',border=10),mimetype='image/png')
+    return Response(resp,mimetype='application/json')
+
 
 @app .route("/waitinvoice")
 def waitinvoice():
@@ -85,9 +88,16 @@ def pay():
 
     return Response(resp,mimetype='application/json')
     
-@app .route("/delexpiredinvoce")
+@app .route("/delexpiredinvoice")
 def delexpiredinvoce():
-    return Response(subprocess.check_output(['lightning-cli','delexpiredinvoce']),mimetype='application/json')
+    resp = "["
+    try:
+        resp+=(subprocess.check_output(['lightning-cli','delexpiredinvoice'],stderr=subprocess.STDOUT)).decode('utf-8')
+        resp+=", \"SUCCESS\"]"
+    except subprocess.CalledProcessError as e:
+        resp+=e.output.decode('utf-8')+", \"ERROR\"]"
+
+    return Response(resp,mimetype='application/json')
 
 @app .route("/getlog")
 def getlog():

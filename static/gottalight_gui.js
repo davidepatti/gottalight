@@ -68,18 +68,23 @@ function generateinvoiceQR(){
 	var label_val = label.value;
 	var desc_val = desc.value;
 
-	/*
+	openQRDialog();
 	$.get("invoiceqr?amount="+amount_val+"&label="+label_val+"&desc="+desc_val,
 		function( data ) {
-		  alert(data[1]+" "+data[0].message);
+			if (data[1]=="ERROR")
+			  alert(data[1]+": "+data[0].message);
+			else
+			{
+				var imgqr = document.getElementById("qrcode");
+				imgqr.src=data[0];
+				imgqr.width="300";
+			}
+
 		}
 	);
 
-	if (data[1]=="SUCCESS")
-		openQRDialog();
-		*/
 
-	window.location = "invoiceqr?amount="+amount_val+"&label="+label_val+"&desc="+desc_val;
+//	window.location = "invoiceqr?amount="+amount_val+"&label="+label_val+"&desc="+desc_val;
 
 }
 
