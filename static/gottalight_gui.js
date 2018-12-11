@@ -19,26 +19,30 @@ function listinvoices(){
 }
 
 function pay(){
+  
+	openDialog("pay Invoice");
 	var bolt11 = document.getElementById("bolt11");
 	var bolt11_val = bolt11.value;
 	$.get("pay?bolt11="+bolt11_val,
 		function( data ) {
-		  alert(data[1]+" "+data[0].message);
+		  openDialog("pay Invoice",data[1]+": "+data[0].message);
 		}
 	);
-	//window.location = "pay?bolt11="+bolt11_val;
 }
 
 function delexpiredinvoice(){
+	openDialog("Delete Expired Invoice");
 	$.get("delexpiredinvoice",
 		function( data ) {
-		  alert(data[1]+" "+data[0].message);
+		  openDialog("Delete Expired Invoices",data[1]+": "+data[0].message);
 		}
 	);
 }
 
 
 function generateinvoice(){
+	document.getElementById("label").value = new Date().toLocaleString();
+	openDialog("Generate Invoice");
 	var amount = document.getElementById("amount");
 	var label = document.getElementById("label");
 	var desc = document.getElementById("desc");
@@ -46,21 +50,23 @@ function generateinvoice(){
 	var label_val = label.value;
 	var desc_val = desc.value;
 
-	/*
+
 	$.get("invoice?amount="+amount_val+"&label="+label_val+"&desc="+desc_val,
 		function( data ) {
-			//var jsonPretty = JSON.stringify(JSON.parse(data[0]),null,2);  
+			if (data[1]=="ERROR") {
+				openDialog("Generate Invoice",data[1]+": "+data[0].message);
+			}
+			else {
+				openDialog("Generate Invoice","bolt11: "+data[0]);
+			}
 
-
-		  //alert(data[1]+" "+data[0].message);
 		}
 	);
-	*/
-	window.location = "invoice?amount="+amount_val+"&label="+label_val+"&desc="+desc_val;
 
 }
 function generateinvoiceQR(){
 
+	document.getElementById("label").value = new Date().toLocaleString();
 	var amount = document.getElementById("amount");
 	var label = document.getElementById("label");
 	var desc = document.getElementById("desc");
@@ -68,11 +74,14 @@ function generateinvoiceQR(){
 	var label_val = label.value;
 	var desc_val = desc.value;
 
-	openQRDialog();
+	openDialog("Generate Invoice QR");
+
 	$.get("invoiceqr?amount="+amount_val+"&label="+label_val+"&desc="+desc_val,
 		function( data ) {
 			if (data[1]=="ERROR")
-			  alert(data[1]+": "+data[0].message);
+			{
+				openDialog("Generate Invoice QR",data[1]+": "+data[0].message);
+			}
 			else
 			{
 				var imgqr = document.getElementById("qrcode");
@@ -83,51 +92,49 @@ function generateinvoiceQR(){
 		}
 	);
 
-
-//	window.location = "invoiceqr?amount="+amount_val+"&label="+label_val+"&desc="+desc_val;
-
 }
 
 function connect(){
 	var id = document.getElementById("connect_node_id");
 	var id_val = id.value;
+	openDialog("Connect to Node");
 	$.get("connect?id="+id_val,
 		function( data ) {
-		  alert(data[1]+" "+data[0].message);
+		  openDialog("Connect to Node",data[1]+" "+data[0].message);
 		}
 	);
-	//window.location = "connect?id="+id_val;
 }
 function closeid(){
 	var id = document.getElementById("close_node_id");
 	var id_val = id.value;
+	openDialog("Close Channel");
 	$.get("close?id="+id_val,
 		function( data ) {
-		  alert(data[1]+" "+data[0].message);
+		  openDialog("Close Channel",data[1]+" "+data[0].message);
 		}
 	);
 }
 function disconnectid(){
 	var id = document.getElementById("disconnect_node_id");
 	var id_val = id.value;
+	openDialog("Disconnect Peer");
 	$.get("disconnect?id="+id_val,
 		function( data ) {
-		  alert(data[1]+" "+data[0].message);
+		  openDialog("Disconnect Peer",data[1]+" "+data[0].message);
 		}
 	);
-	//window.location = "disconnect?id="+id_val;
 }
 function fundchannel(){
 	var id = document.getElementById("fund_node_id");
 	var id_val = id.value;
 	var fund_amount = document.getElementById("fund_amount");
 	var fund_amount_val = fund_amount.value;
+	openDialog("Fund Channel");
 	$.get("fundchannel?id="+id_val+"&amount="+fund_amount_val,
 		function( data ) {
-		  alert(data[1]+" "+data[0].message);
+		  openDialog("Fund Channel",data[1]+" "+data[0].message);
 		}
 	);
-	//window.location = "fundchannel?id="+id_val+"&amount="+fund_amount_val;
 }
 
 function getroute(){
@@ -138,9 +145,10 @@ function getroute(){
 	var msatoshi_val = msatoshi.value;
 	var riskfactor_val = riskfactor.value;
 
+	openDialog("Get Route to Node");
 	$.get("getroute?node_id="+node_id_val+"&msatoshi="+msatoshi_val+"&riskfactor="+riskfactor_val,
 		function( data ) {
-		  alert(data[1]+" "+data[0].message);
+		  openDialog("Get Route to Node",data[1]+" "+data[0].message);
 		}
 	);
 
@@ -164,11 +172,11 @@ $( function() {
 		autoOpen: false,
 		show: {
 			effect: "blind",
-			duration: 1000
+			duration: 500
 		},
 		hide: {
 			effect: "explode",
-			duration: 1000
+			duration: 500
 		}
 	});
 
@@ -177,13 +185,19 @@ $( function() {
 	});
 } );
 
-function openQRDialog(){
+function openDialog(title_text,data){
 
 	$( "#dialog" ).dialog( "open" );
+	$( "#dialog" ).dialog({ title: title_text });
+	//document.getElementById("dialog").title="cioa";
+	if (data==undefined)
+	{
+		document.getElementById("message").innerHTML='<img src="giphy.gif" id="qrcode">';
+	}
+	else
+	{
+
+		document.getElementById("message").innerHTML=data;
+	}
 }
-/*
-$(function test() {
-	$( "#dialog" ).dialog();
-});
-*/
 

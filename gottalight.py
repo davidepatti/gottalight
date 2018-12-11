@@ -37,7 +37,9 @@ def invoice():
    
     resp = "["
     try:
-        resp+=(subprocess.check_output(['lightning-cli','invoice', p1, p2, p3],stderr=subprocess.STDOUT)).decode('utf-8')
+        invoice=(subprocess.check_output(['lightning-cli','invoice', p1, p2, p3],stderr=subprocess.STDOUT)).decode('utf-8')
+        bolt11 = json.loads(invoice)['bolt11']
+        resp+="\""+bolt11+"\""
         resp+=", \"SUCCESS\"]"
 
     except subprocess.CalledProcessError as e:
@@ -57,12 +59,9 @@ def invoiceqr():
     resp = "["
     try:
         invoice=(subprocess.check_output(['lightning-cli','invoice', p1, p2, p3],stderr=subprocess.STDOUT)).decode('utf-8')
-        #bolt11 = json.loads(invoice.decode('utf-8'))['bolt11']
         bolt11 = json.loads(invoice)['bolt11']
-       # resp+="\""+bolt11+"\""
         resp+="\""+qrcode(bolt11,border=10)+"\""
         resp+=", \"SUCCESS\"]"
-        #invoice= subprocess.check_output(['lightning-cli','invoice', p1, p2, p3])
     except subprocess.CalledProcessError as e:
         resp+=e.output.decode('utf-8')+", \"ERROR\"]"
 
