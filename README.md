@@ -9,7 +9,7 @@ Web Interface Testing Environment for the c-lightning implementation of Bitcoin 
 * A Lightning Network full node (install c-lightning following [this guide](https://medium.com/@meeDamian/c-lightning-node-on-rbp3-b950660fb835))
 * Install the following packages, for example:
 
-`apt-get install python3 python3-pip libopenjp2-7 libtiff5`
+`apt-get install python3 python3-pip libopenjp2-7 libtiff5 libjpeg-dev zlib1g-dev`
 
 * Then use pip3 to install flask and qrcode:
 
